@@ -1,9 +1,6 @@
 import bpy
-from ..core.fold_engine import update_folds_callback
 
 class OrigamiCrease(bpy.types.PropertyGroup):
-    def angle_update(self, context):
-        update_folds_callback(context)
     edge_index: bpy.props.IntProperty()
     angle: bpy.props.FloatProperty(
         name="Angle",

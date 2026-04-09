@@ -51,12 +51,16 @@ def apply_constraint_fold(bm, crease: BMEdge, iterations: int = 5) -> None:
 
     for _ in range(iterations):
         satisfy_crease_constraint(v1, v2, f1, f2, target_angle)
-        for e in f1.edges + f2.edges:
+        for e in list(f1.edges) + list(f2.edges):
             L = (e.verts[0].co - e.verts[1].co).length
             satisfy_edge_constraint(e.verts[0], e.verts[1], L)
 
 
 def apply_all_constraints(bm, obj, iterations:int = 3) -> None:
+    # Store original once
+    if not obj.origami_original_positions:
+        store_original_positions(bm, obj)
+        
     restore_original_positions(bm, obj)
     creases = get_valid_creases(bm, obj)
     for _ in range(iterations):

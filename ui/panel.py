@@ -13,6 +13,7 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
 
         layout.operator("mesh.origami_add_crease")
         layout.operator("mesh.origami_apply_folds")
+        layout.operator("origami.reset", icon='LOOP_BACK')
 
         layout.separator()
 
