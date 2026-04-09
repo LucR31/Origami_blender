@@ -1,69 +1,25 @@
 import math
-import bmesh
-from mathutils import Matrix
-from typing import Optional, Set, List, Tuple
-from bmesh.types import BMEdge, BMFace, BMVert
+from bmesh.types import BMEdge
+
 from .crease_manager import get_valid_creases
 from .constrains import satisfy_crease_constraint, satisfy_edge_constraint
+from .edge_utils import get_edge_faces, rotate_face_around_edge
+from .utils import store_original_positions, restore_original_positions
 
-
-def get_edge_faces(edge: BMEdge) -> Optional[List[BMFace]]:
-    """
-    Return the face/s that should rotate around this edge.
-    Assumes exactly two faces per crease edge, skips otherwise.
-    """
-    if len(edge.link_faces) != 2:
-        return None
-
-    f1, f2 = edge.link_faces
-    return [f1, f2]
-
-
-def store_original_positions(bm, obj) -> None:
-    coords = []
-    for v in bm.verts:
-        coords.append(f"{v.co.x},{v.co.y},{v.co.z}")
-
-    obj.origami_original_positions = "|".join(coords)
-
-
-def restore_original_positions(bm, obj) -> None:
-    if not obj.origami_original_positions:
-        store_original_positions(bm, obj)
-        return
-
-    coords = obj.origami_original_positions.split("|")
-
-    for v, c in zip(bm.verts, coords):
-        x, y, z = map(float, c.split(","))
-        v.co.x = x
-        v.co.y = y
-        v.co.z = z
-
-
-def apply_single_fold(bm, crease):
+def apply_single_fold(bm, crease:BMEdge) -> None:
 
     edge = bm.edges[crease.edge_index]
     v1, v2 = edge.verts
-    axis = (v2.co - v1.co).normalized()
-    pivot = (v1.co + v2.co) / 2
 
-    # Pick flap face
-    rotate_mountain = crease.crease_type == "MOUNTAIN"
-    flap_face = get_edge_faces(edge, rotate_mountain)[0]
+    flap_face = get_edge_faces(edge)[0]
     if flap_face is None:
         return
-
-    # Only rotate vertices in flap_face
-    verts_to_rotate = set(flap_face.verts)
 
     angle = math.radians(crease.angle)
     if crease.crease_type == "MOUNTAIN":
         angle = -angle
 
-    rot = Matrix.Rotation(angle, 3, axis)
-    for v in verts_to_rotate:
-        v.co = rot @ (v.co - pivot) + pivot
+    rotate_face_around_edge(flap_face, v1, v2, angle)
 
 
 def apply_all_folds(bm, obj):

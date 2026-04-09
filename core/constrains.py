@@ -1,21 +1,6 @@
 import math
-from mathutils import Vector, Matrix
 from bmesh.types import BMVert, BMFace
-
-
-def rotate_face_around_edge(
-    face: BMFace, v1: BMVert, v2: BMVert, angle_rad: float
-) -> None:
-    """
-    Rotate a face around the edge defined by v1-v2 by angle_rad (radians).
-    Vertices on the edge remain fixed.
-    """
-    edge_vec: Vector = (v2.co - v1.co).normalized()
-    rot: Matrix = Matrix.Rotation(angle_rad, 3, edge_vec)
-
-    for v in face.verts:
-        if v not in (v1, v2):
-            v.co = rot @ (v.co - v1.co) + v1.co
+from .edge_utils import rotate_face_around_edge
 
 
 def satisfy_edge_constraint(v1: BMVert, v2: BMVert, L:float) -> None:
