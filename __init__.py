@@ -1,18 +1,25 @@
 bl_info = {
     "name": "Origami Simulator",
-    "author": "L. Fernandez",
+    "author": "Alpha3",
     "version": (0, 1, 0),
-    "blender": (3, 0, 0),
-    "category": "Mesh",
+    "blender": (4, 1, 0),
+    "location": "View3D > Sidebar > Origami",
+    "description": "Simulate and interactively fold origami patterns in real-time",
+    "category": "Mesh"
 }
+   
 
 import bpy
 
-from .operators.fold import ORIGAMI_OT_fold
+from .properties.crease_props import OrigamiCrease
+from .operators.add_crease import ORIGAMI_OT_add_crease
+from .operators.apply_folds import ORIGAMI_OT_apply_folds
 from .ui.panel import ORIGAMI_PT_panel
 
 classes = (
-    ORIGAMI_OT_fold,
+    OrigamiCrease,
+    ORIGAMI_OT_add_crease,
+    ORIGAMI_OT_apply_folds,
     ORIGAMI_PT_panel,
 )
 
@@ -20,6 +27,12 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
+    bpy.types.Object.origami_creases = bpy.props.CollectionProperty(type=OrigamiCrease)
+    bpy.types.Object.origami_original_positions = bpy.props.StringProperty()
+
 def unregister():
+    del bpy.types.Object.origami_creases
+    del bpy.types.Object.origami_original_positions
+
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

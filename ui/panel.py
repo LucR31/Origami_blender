@@ -1,7 +1,7 @@
 import bpy
 
 class ORIGAMI_PT_panel(bpy.types.Panel):
-    bl_label = "Origami Simulator"
+    bl_label = "Origami Editor"
     bl_idname = "ORIGAMI_PT_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -9,6 +9,16 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+        obj = context.object
 
-        layout.label(text="Fold Tool")
-        layout.operator("mesh.origami_fold")
+        layout.operator("mesh.origami_add_crease")
+        layout.operator("mesh.origami_apply_folds")
+
+        layout.separator()
+
+        for i, crease in enumerate(obj.origami_creases):
+            box = layout.box()
+            box.label(text=f"Crease {i}")
+
+            box.prop(crease, "angle", slider=False)
+            box.prop(crease, "crease_type")
