@@ -11,6 +11,9 @@ bl_info = {
 
 import bpy
 
+from .operators import *
+from .core import *
+
 from .properties.crease_props import OrigamiCrease
 from .operators.add_crease import ORIGAMI_OT_add_crease
 from .operators.reset_op import ORIGAMI_OT_Reset

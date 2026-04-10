@@ -6,6 +6,29 @@ def store_original_positions(bm, obj) -> None:
     obj.origami_original_positions = "|".join(coords)
 
 
+def store_edge_lengths(bm, obj) -> None:
+    data = []
+    for e in bm.edges:
+        v1, v2 = e.verts
+        L = (v2.co - v1.co).length
+        data.append(f"{e.index},{L}")
+
+    obj.origami_edge_lengths = "|".join(data)
+
+
+def get_edge_lengths(obj) -> dict:
+    result = {}
+
+    if not obj.origami_edge_lengths:
+        return result
+
+    for item in obj.origami_edge_lengths.split("|"):
+        idx, L = item.split(",")
+        result[int(idx)] = float(L)
+
+    return result
+
+
 def restore_original_positions(bm, obj) -> None:
     if not obj.origami_original_positions:
         store_original_positions(bm, obj)

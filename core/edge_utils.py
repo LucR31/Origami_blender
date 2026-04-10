@@ -1,18 +1,7 @@
 from mathutils import Vector, Matrix
 from bmesh.types import BMVert, BMFace, BMEdge
 from typing import Optional, List
-
-
-def get_edge_faces(edge: BMEdge) -> Optional[List[BMFace]]:
-    """
-    Return the face/s that should rotate around this edge.
-    Assumes exactly two faces per crease edge, skips otherwise.
-    """
-    if len(edge.link_faces) != 2:
-        return None
-
-    f1, f2 = edge.link_faces
-    return [f1, f2]
+import math
 
 
 def rotate_face_around_edge(
@@ -28,3 +17,28 @@ def rotate_face_around_edge(
     for v in face.verts:
         if v not in (v1, v2):
             v.co = rot @ (v.co - v1.co) + v1.co
+
+
+def compute_face_normal(face: BMFace) -> Vector:
+    """Compute face normal (safe version)"""
+    return face.normal.normalized()
+
+
+def compute_dihedral_angle(v1: BMVert, v2: BMVert, f1: BMFace, f2: BMFace) -> float:
+    """
+    Compute signed dihedral angle between two faces sharing edge (v1, v2)
+    """
+
+    n1 = compute_face_normal(f1)
+    n2 = compute_face_normal(f2)
+
+    edge_vec = (v2.co - v1.co).normalized()
+
+    # Angle magnitude
+    cos_theta = max(-1.0, min(1.0, n1.dot(n2)))
+    theta = math.acos(cos_theta)
+
+    # Sign using orientation
+    sign = 1.0 if edge_vec.dot(n1.cross(n2)) > 0 else -1.0
+
+    return sign * theta
