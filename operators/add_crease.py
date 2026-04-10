@@ -1,6 +1,7 @@
 import bpy
 import bmesh
 
+
 class ORIGAMI_OT_add_crease(bpy.types.Operator):
     bl_idname = "mesh.origami_add_crease"
     bl_label = "Add Crease"
@@ -12,8 +13,8 @@ class ORIGAMI_OT_add_crease(bpy.types.Operator):
         selected_edges = [e for e in bm.edges if e.select]
 
         if len(selected_edges) != 1:
-            self.report({'ERROR'}, "Select exactly one edge")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, "Select exactly one edge")
+            return {"CANCELLED"}
 
         edge = selected_edges[0]
 
@@ -21,5 +22,5 @@ class ORIGAMI_OT_add_crease(bpy.types.Operator):
         crease.edge_index = edge.index
         crease.angle = 0.0
 
-        self.report({'INFO'}, "Crease added")
-        return {'FINISHED'}
+        self.report({"INFO"}, "Crease added")
+        return {"FINISHED"}

@@ -1,10 +1,11 @@
 import bpy
 
+
 class ORIGAMI_PT_panel(bpy.types.Panel):
     bl_label = "Origami Editor"
     bl_idname = "ORIGAMI_PT_panel"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
     bl_category = "Origami"
 
     def draw(self, context):
@@ -13,7 +14,7 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
 
         layout.operator("mesh.origami_add_crease")
         layout.operator("mesh.origami_apply_folds")
-        layout.operator("origami.reset", icon='LOOP_BACK')
+        layout.operator("origami.reset", icon="LOOP_BACK")
 
         layout.separator()
 

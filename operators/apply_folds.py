@@ -2,6 +2,7 @@ import bpy
 import bmesh
 from ..core.fold_engine import apply_all_folds
 
+
 class ORIGAMI_OT_apply_folds(bpy.types.Operator):
     bl_idname = "mesh.origami_apply_folds"
     bl_label = "Apply All Folds"
@@ -15,4 +16,4 @@ class ORIGAMI_OT_apply_folds(bpy.types.Operator):
         apply_all_folds(bm, obj)
 
         bmesh.update_edit_mesh(me)
-        return {'FINISHED'}
+        return {"FINISHED"}

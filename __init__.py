@@ -5,9 +5,9 @@ bl_info = {
     "blender": (4, 1, 0),
     "location": "View3D > Sidebar > Origami",
     "description": "Simulate and interactively fold origami patterns in real-time",
-    "category": "Mesh"
+    "category": "Mesh",
 }
-   
+
 
 import bpy
 
@@ -28,12 +28,14 @@ classes = (
     ORIGAMI_PT_panel,
 )
 
+
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
     bpy.types.Object.origami_creases = bpy.props.CollectionProperty(type=OrigamiCrease)
     bpy.types.Object.origami_original_positions = bpy.props.StringProperty()
+
 
 def unregister():
     del bpy.types.Object.origami_creases
