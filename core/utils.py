@@ -1,10 +1,5 @@
 import json
 
-# =========================================================
-# STORAGE HELPERS
-# =========================================================
-
-
 def store_original_positions(bm, obj) -> None:
     """
     Stores vertex positions as a serialized string in Blender custom props.
@@ -31,11 +26,6 @@ def store_edge_lengths(bm, obj) -> None:
     obj["origami_edge_lengths"] = "|".join(data)
 
 
-# =========================================================
-# GETTERS
-# =========================================================
-
-
 def get_edge_lengths(obj) -> dict:
     """
     Returns:
@@ -56,11 +46,6 @@ def get_edge_lengths(obj) -> dict:
     return result
 
 
-# =========================================================
-# RESTORE STATE
-# =========================================================
-
-
 def restore_original_positions(bm, obj) -> None:
     """
     Restores mesh vertices from stored state.
@@ -78,11 +63,6 @@ def restore_original_positions(bm, obj) -> None:
         v.co.x = x
         v.co.y = y
         v.co.z = z
-
-
-# =========================================================
-# OPTIONAL (RECOMMENDED UPGRADE HELPERS)
-# =========================================================
 
 
 def store_edge_lengths_json(bm, obj) -> None:
