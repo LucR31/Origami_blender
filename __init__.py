@@ -19,6 +19,7 @@ from .operators.add_crease import ORIGAMI_OT_add_crease
 from .operators.reset_op import ORIGAMI_OT_Reset
 from .operators.apply_folds import ORIGAMI_OT_apply_folds
 from .ui.panel import ORIGAMI_PT_panel
+from .operators.import_fold import ORIGAMI_OT_import_fold
 
 classes = (
     OrigamiCrease,
@@ -26,6 +27,7 @@ classes = (
     ORIGAMI_OT_apply_folds,
     ORIGAMI_OT_Reset,
     ORIGAMI_PT_panel,
+    ORIGAMI_OT_import_fold
 )
 
 
