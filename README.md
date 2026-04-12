@@ -2,6 +2,8 @@
 
 A Blender addon for simulating and editing origami structures using geometric constraints and folding operations.
 
+<img  src="img/Screenshot_ui.png" width="300"/>
+
 
 ## Installation
 
@@ -17,6 +19,11 @@ A Blender addon for simulating and editing origami structures using geometric co
 5. Select the `.zip` file
 6. Enable the addon (search for "Origami")
 
+## Use
+
+1. Import a FOLD file or create the crease pattern manually.
+2. Select the object and Go to Edit mode
+3. Click **Apply All Folds**
 
 ## For developers
 
@@ -32,6 +39,7 @@ A Blender addon for simulating and editing origami structures using geometric co
 * [operators/](operators/)  
     * [add_crease.py](add_crease.py)      
     * [apply_folds.py](apply_folds.py)
+    * [import_fold.py](import_fold.py)
     * [reset_op.py](reset_op.py)
 * [properties/]()      
     * [crease_props.py](crease_props.py)       
