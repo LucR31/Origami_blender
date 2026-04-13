@@ -51,3 +51,46 @@ A Blender addon for simulating and editing origami structures using geometric co
     * [test_core.py](test_core.py)
 * [ui/](ui/)
     * [panel.py](panel.py)
+
+### Class structure
+
+```mermaid
+classDiagram
+
+class CreaseEdge {
+    +edge
+    +angle
+    +crease_type
+
+    +signed_angle()
+    +get_faces()
+    +compute_dihedral()
+}
+
+```
+
+
+```mermaid
+classDiagram
+
+class Constraint {
+    <<abstract>>
+    +project(bm: BMesh)
+}
+
+class EdgeLengthConstraint {
+    +edge
+    +rest_length: float
+    +__init__(edge, rest_length: float)
+    +project(bm)
+}
+
+class CreaseConstraint {
+    +crease
+    +__init__(crease_edge)
+    +project(bm)
+}
+
+Constraint <|-- EdgeLengthConstraint
+Constraint <|-- CreaseConstraint
+```
