@@ -37,11 +37,18 @@ def register():
 
     bpy.types.Object.origami_creases = bpy.props.CollectionProperty(type=OrigamiCrease)
     bpy.types.Object.origami_original_positions = bpy.props.StringProperty()
+    bpy.types.Scene.origami_iterations = bpy.props.IntProperty(
+        name="Iterations",
+        default=50,
+        min=1,
+        max=500
+    )
 
 
 def unregister():
     del bpy.types.Object.origami_creases
     del bpy.types.Object.origami_original_positions
+    del bpy.types.Scene.origami_iterations
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

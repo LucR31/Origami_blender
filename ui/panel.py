@@ -11,11 +11,14 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         obj = context.object
+        scene = context.scene
 
+        layout.prop(scene, "origami_iterations")
         layout.operator("mesh.origami_add_crease")
         layout.operator("mesh.origami_apply_folds")
         layout.operator("origami.reset", icon="LOOP_BACK")
         layout.operator("origami.import_fold")
+        
 
         layout.separator()
 

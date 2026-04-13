@@ -1,6 +1,6 @@
 import bpy
 import bmesh
-from ..core.fold_engine import apply_all_folds
+from ..core.fold_engine import apply_all_folds, solve
 
 
 class ORIGAMI_OT_apply_folds(bpy.types.Operator):
@@ -12,8 +12,10 @@ class ORIGAMI_OT_apply_folds(bpy.types.Operator):
         me = obj.data
 
         bm = bmesh.from_edit_mesh(me)
-
-        apply_all_folds(bm, obj)
+        iterations = context.scene.origami_iterations
+        
+        #apply_all_folds(bm, obj)
+        solve(bm, obj, iterations)
 
         bmesh.update_edit_mesh(me)
         return {"FINISHED"}
