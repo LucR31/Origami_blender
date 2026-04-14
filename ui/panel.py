@@ -13,12 +13,12 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
         obj = context.object
         scene = context.scene
 
-        layout.prop(scene, "origami_iterations")
+        layout.prop(scene, "origami_solver_mode")
         layout.operator("mesh.origami_add_crease")
         layout.operator("mesh.origami_apply_folds")
+        layout.prop(scene, "origami_iterations")
         layout.operator("origami.reset", icon="LOOP_BACK")
         layout.operator("origami.import_fold")
-        
 
         layout.separator()
 

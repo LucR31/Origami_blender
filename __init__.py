@@ -27,7 +27,7 @@ classes = (
     ORIGAMI_OT_apply_folds,
     ORIGAMI_OT_Reset,
     ORIGAMI_PT_panel,
-    ORIGAMI_OT_import_fold
+    ORIGAMI_OT_import_fold,
 )
 
 
@@ -38,10 +38,16 @@ def register():
     bpy.types.Object.origami_creases = bpy.props.CollectionProperty(type=OrigamiCrease)
     bpy.types.Object.origami_original_positions = bpy.props.StringProperty()
     bpy.types.Scene.origami_iterations = bpy.props.IntProperty(
-        name="Iterations",
-        default=50,
-        min=1,
-        max=500
+        name="Iterations", default=50, min=1, max=500
+    )
+    bpy.types.Scene.origami_solver_mode = bpy.props.EnumProperty(
+        name="Solver",
+        items=[
+            ("PROJECTION", "Projection", ""),
+            ("ENERGY", "Energy", ""),
+            ("PHYSICS", "Physics", ""),
+        ],
+        default="PROJECTION",
     )
 
 
@@ -49,6 +55,7 @@ def unregister():
     del bpy.types.Object.origami_creases
     del bpy.types.Object.origami_original_positions
     del bpy.types.Scene.origami_iterations
+    del bpy.types.Scene.origami_solver_mode
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

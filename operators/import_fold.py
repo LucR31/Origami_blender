@@ -21,7 +21,7 @@ class ORIGAMI_OT_import_fold(bpy.types.Operator):
         assignments = data.get("edges_assignment", [])
         faces_data = data.get("faces_vertices", [])
         face_orders = data.get("faceOrders", [])
-        edges_angle = data.get("edges_foldAngle",[])
+        edges_angle = data.get("edges_foldAngle", [])
 
         # Create mesh
         mesh = bpy.data.meshes.new("OrigamiMesh")
@@ -40,7 +40,7 @@ class ORIGAMI_OT_import_fold(bpy.types.Operator):
 
         # Create edges
         for e in edges_data:
-            v1, v2 = bm_verts[e[0]] ,bm_verts[e[1]]
+            v1, v2 = bm_verts[e[0]], bm_verts[e[1]]
 
             try:
                 bm.edges.new((v1, v2))
@@ -104,16 +104,15 @@ class ORIGAMI_OT_import_fold(bpy.types.Operator):
                 continue
 
             a, angle = edge_map[key]
-            
 
             c = obj.origami_creases.add()
             c.edge_index = e.index
             c.angle = angle
 
             if a == "M":
-                c.crease_type = 'MOUNTAIN'
+                c.crease_type = "MOUNTAIN"
             else:
-                c.crease_type = 'VALLEY'
+                c.crease_type = "VALLEY"
 
         # DEBUG INFO (VERY USEFUL)
         print("FOLD IMPORT:")
@@ -123,9 +122,9 @@ class ORIGAMI_OT_import_fold(bpy.types.Operator):
         print("Creases:", len(obj.origami_creases))
         print("FaceOrders:", len(face_orders))
 
-        self.report({'INFO'}, "FOLD file imported successfully")
-        return {'FINISHED'}
+        self.report({"INFO"}, "FOLD file imported successfully")
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
-        return {'RUNNING_MODAL'}
+        return {"RUNNING_MODAL"}

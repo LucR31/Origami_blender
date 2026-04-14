@@ -1,4 +1,5 @@
 from .crease_manager import get_valid_creases
+from mathutils import Vector
 import random
 from .constraints import EdgeLengthConstraint, CreaseConstraint
 from .utils import (
@@ -28,6 +29,7 @@ def build_constraints(bm, obj) -> list:
 
     return constraints
 
+
 def save_original_position(bm, obj) -> None:
 
     if not getattr(obj, "origami_original_positions", None):
@@ -36,8 +38,8 @@ def save_original_position(bm, obj) -> None:
     if not getattr(obj, "origami_edge_lengths", None):
         store_edge_lengths(bm, obj)
 
-# Main fucntion
-def apply_all_folds(bm, obj, iterations: int = 10):
+
+def apply_all_folds(bm, obj, iterations: int = 10) -> None:
 
     save_original_position(bm, obj)
     restore_original_positions(bm, obj)
@@ -50,14 +52,13 @@ def apply_all_folds(bm, obj, iterations: int = 10):
         for c in constraints:
             c.project(bm)
 
-def total_energy(constraints):
-    return sum(
-        c.energy() for c in constraints
-        if hasattr(c, "energy")
-    )
 
-def solve(bm, obj, iterations=50, alpha=1):
-    """ Enery monitoring solver """
+def total_energy(constraints):
+    return sum(c.energy() for c in constraints if hasattr(c, "energy"))
+
+
+def solve(bm, obj, iterations: int = 50, alpha: float = 1) -> None:
+    """Enery monitoring solver"""
 
     save_original_position(bm, obj)
     restore_original_positions(bm, obj)
@@ -75,3 +76,29 @@ def solve(bm, obj, iterations=50, alpha=1):
         print(E)
         if E < 1e-6:
             break
+
+
+def solve_physics(bm, obj, steps: int = 50, dt: float = 0.1) -> None:
+    """Physics solver"""
+
+    save_original_position(bm, obj)
+    restore_original_positions(bm, obj)
+    constraints = build_constraints(bm, obj)
+
+    # init velocities
+    velocities = {v: Vector((0, 0, 0)) for v in bm.verts}
+
+    for _ in range(steps):
+
+        forces = {v: Vector((0, 0, 0)) for v in bm.verts}
+
+        # accumulate forces
+        for c in constraints:
+            f = c.force()
+            for v, fv in f.items():
+                forces[v] += fv
+
+        # integrate
+        for v in bm.verts:
+            velocities[v] += forces[v] * dt
+            v.co += velocities[v] * dt

@@ -1,5 +1,6 @@
 import json
 
+
 def store_original_positions(bm, obj) -> None:
     """
     Stores vertex positions as a serialized string in Blender custom props.
