@@ -20,6 +20,20 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
         layout.operator("origami.reset", icon="LOOP_BACK")
         layout.operator("origami.import_fold")
 
+        layout.label(text="Animation")
+        layout.prop(scene, "origami_animate")
+        layout.prop(scene, "origami_frame_step")
+
+        layout.label(text="Collision")
+        layout.prop(scene, "origami_use_collision")
+
+        col = layout.column()
+        col.enabled = scene.origami_use_collision
+        col.prop(scene, "origami_collision_strength")
+        col.prop(scene, "origami_collision_threshold")
+        if not scene.origami_use_collision:
+            layout.label(text="⚠ Collisions disabled", icon='ERROR')
+
         layout.separator()
 
         for i, crease in enumerate(obj.origami_creases):

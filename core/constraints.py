@@ -20,7 +20,7 @@ class Constraint(ABC):
         return 0.0
 
     def force(self) -> dict:
-        return {}  # dict: vertex → Vector
+        return {}
 
 
 class EdgeLengthConstraint(Constraint):

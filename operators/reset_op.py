@@ -17,7 +17,7 @@ class ORIGAMI_OT_Reset(bpy.types.Operator):
             return {"CANCELLED"}
 
         # Reset crease angles
-        #for crease in context.object.origami_creases:
+        # for crease in context.object.origami_creases:
         #    crease.angle = 0.0
 
         # Restore geometry using core function

@@ -2,6 +2,7 @@ from .crease_manager import get_valid_creases
 from mathutils import Vector
 import random
 from .constraints import EdgeLengthConstraint, CreaseConstraint
+from .collisions import collision_forces_bvh
 from .utils import (
     store_original_positions,
     restore_original_positions,
@@ -78,7 +79,15 @@ def solve(bm, obj, iterations: int = 50, alpha: float = 1) -> None:
             break
 
 
-def solve_physics(bm, obj, steps: int = 50, dt: float = 0.1) -> None:
+def solve_physics(
+    bm,
+    obj,
+    use_collision: bool,
+    threshold: float,
+    strength: float,
+    steps: int = 50,
+    dt: float = 0.1,
+) -> None:
     """Physics solver"""
 
     save_original_position(bm, obj)
@@ -97,6 +106,15 @@ def solve_physics(bm, obj, steps: int = 50, dt: float = 0.1) -> None:
             f = c.force()
             for v, fv in f.items():
                 forces[v] += fv
+
+        # collisions
+        if use_collision:
+            collision_f = collision_forces_bvh(
+                bm, threshold=threshold, strength=strength
+            )
+
+            for v in bm.verts:
+                forces[v] += collision_f[v]
 
         # integrate
         for v in bm.verts:
