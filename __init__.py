@@ -50,37 +50,31 @@ def register():
         default="PROJECTION",
     )
     bpy.types.Scene.origami_animate = bpy.props.BoolProperty(
-    name="Animate",
-    default=False
+        name="Animate", default=False
     )
 
     bpy.types.Scene.origami_frame_step = bpy.props.IntProperty(
-        name="Frame Step",
-        default=1,
-        min=1,
-        max=10
+        name="Frame Step", default=1, min=1, max=10
     )
     bpy.types.Scene.origami_use_collision = bpy.props.BoolProperty(
-    name="Use Collision",
-    description="Enable self-collision handling",
-    default=True
-)
+        name="Use Collision", description="Enable self-collision handling", default=True
+    )
 
     bpy.types.Scene.origami_collision_strength = bpy.props.FloatProperty(
-    name="Collision Strength",
-    description="Repulsion force for collisions",
-    default=0.5,
-    min=0.0,
-    max=10.0
-)
+        name="Collision Strength",
+        description="Repulsion force for collisions",
+        default=0.5,
+        min=0.0,
+        max=10.0,
+    )
 
     bpy.types.Scene.origami_collision_threshold = bpy.props.FloatProperty(
-    name="Collision Distance",
-    description="Minimum allowed distance between surfaces",
-    default=0.01,
-    min=0.0001,
-    max=0.1
-)
+        name="Collision Distance",
+        description="Minimum allowed distance between surfaces",
+        default=0.01,
+        min=0.0001,
+        max=0.1,
+    )
 
 
 def unregister():

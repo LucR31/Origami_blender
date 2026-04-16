@@ -32,7 +32,7 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
         col.prop(scene, "origami_collision_strength")
         col.prop(scene, "origami_collision_threshold")
         if not scene.origami_use_collision:
-            layout.label(text="⚠ Collisions disabled", icon='ERROR')
+            layout.label(text="⚠ Collisions disabled", icon="ERROR")
 
         layout.separator()
 
