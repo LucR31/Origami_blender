@@ -1,6 +1,12 @@
 import bpy
 import bmesh
 from ..core.fold_engine import apply_all_folds, solve, solve_physics
+from ..core.utils import (
+    ensure_shape_keys,
+    store_folded_shape,
+    restore_basis,
+    animate_shape_key
+)
 
 
 class ORIGAMI_OT_apply_folds(bpy.types.Operator):
@@ -10,7 +16,6 @@ class ORIGAMI_OT_apply_folds(bpy.types.Operator):
     def execute(self, context):
         obj = context.object
         me = obj.data
-        bm = bmesh.from_edit_mesh(me)
 
         # Sim params
         iterations = context.scene.origami_iterations
@@ -22,9 +27,19 @@ class ORIGAMI_OT_apply_folds(bpy.types.Operator):
         threshold = context.scene.origami_collision_threshold
 
         # Animation
-        if context.scene.origami_animate:
-            pass
+        animate = context.scene.origami_animate
 
+        if animate:
+            bm = bmesh.new()
+            bm.from_mesh(me)
+            bm.verts.ensure_lookup_table()
+            bm.edges.ensure_lookup_table()
+            bm.faces.ensure_lookup_table()
+            ensure_shape_keys(obj)
+        else:
+            bm = bmesh.from_edit_mesh(me)
+
+        # Main loop
         if mode == "PROJECTION":
             apply_all_folds(bm, obj, iterations=iterations)
 
@@ -41,5 +56,14 @@ class ORIGAMI_OT_apply_folds(bpy.types.Operator):
                 steps=iterations,
             )
 
-        bmesh.update_edit_mesh(me)
+        if animate:
+            store_folded_shape(obj, bm)
+            #bm.to_mesh(me)
+            restore_basis(obj)
+            animate_shape_key(obj)
+            bm.free()
+
+        else:
+            bmesh.update_edit_mesh(me)
+
         return {"FINISHED"}

@@ -52,10 +52,6 @@ def register():
     bpy.types.Scene.origami_animate = bpy.props.BoolProperty(
         name="Animate", default=False
     )
-
-    bpy.types.Scene.origami_frame_step = bpy.props.IntProperty(
-        name="Frame Step", default=1, min=1, max=10
-    )
     bpy.types.Scene.origami_use_collision = bpy.props.BoolProperty(
         name="Use Collision", description="Enable self-collision handling", default=True
     )

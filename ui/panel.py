@@ -22,8 +22,7 @@ class ORIGAMI_PT_panel(bpy.types.Panel):
 
         layout.label(text="Animation")
         layout.prop(scene, "origami_animate")
-        layout.prop(scene, "origami_frame_step")
-
+       
         layout.label(text="Collision")
         layout.prop(scene, "origami_use_collision")
 
